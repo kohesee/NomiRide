@@ -1,314 +1,291 @@
-# NomiRide
-NomiRide: a nominal ride sharing app, to demonstrate OOP concepts
+# Minimal Ride-Sharing - 5 Days, OOP Split Across 5 People
 
-p1: aaysha
-p2: param
-p3: anushri
-p4: aditya
-p5: kaivalya
+## **Tech Stack**
+- **Backend**: Java Spring Boot
+- **Frontend**: 1 React Native App (Expo)
+- **Database**: None (ArrayList/HashMap in memory)
 
-Minimal Ride-Sharing - 5 Days, OOP Split Across 5 People
-Tech Stack
-Backend: Java Spring Boot
-Frontend: 1 React Native App (Expo)
-Database: None (ArrayList/HashMap in memory)
+---
 
+## **Person 1: ENCAPSULATION - Part 1 (Day 1-3)**
 
-Aaysha : ENCAPSULATION - Part 1 (Day 1-3)
-Responsibility
+### **Responsibility**
 Rider & Ride models with encapsulation
-Deliver
-Rider Class:
 
-private String id, name, phone
+### **Deliver**
+- **Rider Class**:
+  ```
+  private String id, name, phone
+  private double walletBalance
+  public getters/setters
+  public boolean deductFromWallet(amount) // with validation
+  public void addToWallet(amount)
+  private boolean hasValidBalance(amount) // private helper
+  ```
 
-private double walletBalance
+- **Ride Class**:
+  ```
+  private String id, riderId, driverId
+  private double distance, fare
+  private RideStatus status
+  private LocalDateTime timestamp
+  public getters/setters
+  public void setFare(double fare) // with validation
+  public void markCompleted()
+  public boolean canComplete() // validation logic
+  ```
 
-public getters/setters
+- **RideStatus Enum**: PENDING, IN_PROGRESS, COMPLETED, CANCELLED
 
-public boolean deductFromWallet(amount) // with validation
+### **OOP Focus**:
+- Private fields
+- Public methods for controlled access
+- Internal validation hidden from outside
 
-public void addToWallet(amount)
+---
 
-private boolean hasValidBalance(amount) // private helper
+## **Person 2: ENCAPSULATION - Part 2 (Day 1-3)**
 
-Ride Class:
-
-private String id, riderId, driverId
-
-private double distance, fare
-
-private RideStatus status
-
-private LocalDateTime timestamp
-
-public getters/setters
-
-public void setFare(double fare) // with validation
-
-public void markCompleted()
-
-public boolean canComplete() // validation logic
-
-RideStatus Enum: PENDING, IN_PROGRESS, COMPLETED, CANCELLED
-OOP Focus:
-Private fields
-Public methods for controlled access
-Internal validation hidden from outside
-
-
-Param : ENCAPSULATION - Part 2 (Day 1-3)
-Responsibility
+### **Responsibility**
 Driver & Location models + data storage
-Deliver
-Driver Class:
 
-private String id, name, vehicleType
+### **Deliver**
+- **Driver Class**:
+  ```
+  private String id, name, vehicleType
+  private DriverStatus status
+  private Location location
+  public getters/setters
+  public void markBusy()
+  public void markAvailable()
+  public boolean isAvailable()
+  ```
 
-private DriverStatus status
+- **Location Class**:
+  ```
+  private double latitude, longitude
+  private String address
+  public getters/setters
+  public double distanceTo(Location other) // calculation hidden
+  ```
 
-private Location location
+- **DataStore Class**:
+  ```
+  private static ArrayList<Rider> riders
+  private static ArrayList<Driver> drivers
+  private static ArrayList<Ride> rides
+  public static methods to add/get/update
+  ```
 
-public getters/setters
+- **DriverStatus Enum**: AVAILABLE, BUSY, OFFLINE
 
-public void markBusy()
+- **DataSeeder**: Create 5 drivers, 3 riders on startup
 
-public void markAvailable()
+### **OOP Focus**:
+- Private fields with public methods
+- Encapsulated data structures
+- Controlled data access
 
-public boolean isAvailable()
+---
 
-Location Class:
+## **Person 3: INHERITANCE + POLYMORPHISM - Part 1 (Day 2-4)**
 
-private double latitude, longitude
-
-private String address
-
-public getters/setters
-
-public double distanceTo(Location other) // calculation hidden
-
-DataStore Class:
-
-private static ArrayList<Rider> riders
-
-private static ArrayList<Driver> drivers
-
-private static ArrayList<Ride> rides
-
-public static methods to add/get/update
-
-DriverStatus Enum: AVAILABLE, BUSY, OFFLINE
-
-DataSeeder: Create 5 drivers, 3 riders on startup
-OOP Focus:
-Private fields with public methods
-Encapsulated data structures
-Controlled data access
-
-
-Anushri : INHERITANCE + POLYMORPHISM - Part 1 (Day 2-4)
-Responsibility
+### **Responsibility**
 Vehicle hierarchy + pricing strategies
-Deliver
-Inheritance:
-Vehicle (abstract):
 
-protected String type
+### **Deliver**
 
-protected double baseFareMultiplier
+### **Inheritance**:
+- **Vehicle (abstract)**:
+  ```
+  protected String type
+  protected double baseFareMultiplier
+  public abstract double getMultiplier()
+  public abstract int getCapacity()
+  ```
 
-public abstract double getMultiplier()
+- **Car extends Vehicle**: multiplier = 1.0, capacity = 4
+- **Bike extends Vehicle**: multiplier = 0.6, capacity = 1
+- **Auto extends Vehicle**: multiplier = 0.8, capacity = 3
 
-public abstract int getCapacity()
+- **VehicleFactory**:
+  ```
+  public static Vehicle createVehicle(VehicleType type)
+  ```
 
-Car extends Vehicle: multiplier = 1.0, capacity = 4
+### **Polymorphism**:
+- **PricingStrategy (interface)**:
+  ```
+  double calculateFare(double distance, Vehicle vehicle)
+  ```
 
-Bike extends Vehicle: multiplier = 0.6, capacity = 1
+- **FlatPricing implements PricingStrategy**: base 5 + distance * 2 * multiplier
+- **SurgePricing implements PricingStrategy**: base 5 + distance * 3 * multiplier
 
-Auto extends Vehicle: multiplier = 0.8, capacity = 3
+### **OOP Focus**:
+- Parent-child inheritance
+- Method overriding
+- Interface for multiple implementations
+- Runtime behavior selection
 
-VehicleFactory:
+---
 
-public static Vehicle createVehicle(VehicleType type)
-Polymorphism:
-PricingStrategy (interface):
+## **Person 4: POLYMORPHISM + ABSTRACTION + Mobile Part 1 (Day 2-4)**
 
-double calculateFare(double distance, Vehicle vehicle)
-
-FlatPricing implements PricingStrategy: base 5 + distance * 2 * multiplier
-
-SurgePricing implements PricingStrategy: base 5 + distance * 3 * multiplier
-OOP Focus:
-Parent-child inheritance
-Method overriding
-Interface for multiple implementations
-Runtime behavior selection
-
-
-Aditya : POLYMORPHISM + ABSTRACTION + Mobile Part 1 (Day 2-4)
-Responsibility
+### **Responsibility**
 Service layer + REST API + Mobile screens 1-3
-Backend:
-RideService:
 
-createRide(riderId, distance, vehicleType, useSurge)
-
-  - Find available driver (random)
-
-  - Create vehicle using VehicleFactory
-
-  - Select PricingStrategy based on useSurge
-
-  - Calculate fare using strategy.calculateFare()
-
-  - Create Ride, store in DataStore
-
+### **Backend**:
+- **RideService**:
+  ```
+  createRide(riderId, distance, vehicleType, useSurge)
+    - Find available driver (random)
+    - Create vehicle using VehicleFactory
+    - Select PricingStrategy based on useSurge
+    - Calculate fare using strategy.calculateFare()
+    - Create Ride, store in DataStore
+    
+  completeRide(rideId)
+    - Get ride from DataStore
+    - Deduct from rider wallet
+    - Mark driver available
+    - Mark ride completed
   
+  getRideHistory(riderId)
+  getRide(rideId)
+  getAvailableDrivers()
+  ```
 
-completeRide(rideId)
+- **RideController (REST API)**:
+  ```
+  POST /api/rides
+  GET /api/rides/{id}
+  PATCH /api/rides/{id}/complete
+  GET /api/rides/history/{riderId}
+  GET /api/drivers/available
+  ```
 
-  - Get ride from DataStore
+### **Mobile App (Screens 1-3)**:
+- **Setup**: Expo project, React Navigation, axios setup
 
-  - Deduct from rider wallet
+- **Screen 1 - Home**:
+  - Input: Distance (km)
+  - Select: Vehicle type (3 buttons: Car/Bike/Auto)
+  - Toggle: Surge pricing
+  - Button: "Calculate Fare" → shows estimate
+  - Button: "Book Ride"
 
-  - Mark driver available
+- **Screen 2 - Booking Confirmation**:
+  - Shows: Driver name, Vehicle, Fare, Status
+  - Button: "Complete Ride"
 
-  - Mark ride completed
+- **Screen 3 - Ride Details**:
+  - Full ride info display
+  - Status indicator
 
-getRideHistory(riderId)
+### **OOP Focus**:
+- Polymorphism: RideService uses PricingStrategy interface
+- Same method name, different behavior at runtime
 
-getRide(rideId)
+---
 
-getAvailableDrivers()
+## **Person 5: ABSTRACTION + Mobile Part 2 (Day 3-5)**
 
-RideController (REST API):
-
-POST /api/rides
-
-GET /api/rides/{id}
-
-PATCH /api/rides/{id}/complete
-
-GET /api/rides/history/{riderId}
-
-GET /api/drivers/available
-Mobile App (Screens 1-3):
-Setup: Expo project, React Navigation, axios setup
-
-Screen 1 - Home:
-
-Input: Distance (km)
-Select: Vehicle type (3 buttons: Car/Bike/Auto)
-Toggle: Surge pricing
-Button: "Calculate Fare" → shows estimate
-Button: "Book Ride"
-
-Screen 2 - Booking Confirmation:
-
-Shows: Driver name, Vehicle, Fare, Status
-Button: "Complete Ride"
-
-Screen 3 - Ride Details:
-
-Full ride info display
-Status indicator
-OOP Focus:
-Polymorphism: RideService uses PricingStrategy interface
-Same method name, different behavior at runtime
-
-
-Kaivalya : ABSTRACTION + Mobile Part 2 (Day 3-5)
-Responsibility
+### **Responsibility**
 Abstract service layer + Mobile screens 4-5 + integration
-Backend:
-IRideManagement (interface):
 
-Ride requestRide(String riderId, double distance, VehicleType type, boolean surge)
+### **Backend**:
+- **IRideManagement (interface)**:
+  ```
+  Ride requestRide(String riderId, double distance, VehicleType type, boolean surge)
+  Ride completeRide(String rideId)
+  List<Ride> getUserRides(String riderId)
+  Rider getRider(String riderId)
+  ```
 
-Ride completeRide(String rideId)
+- **RideManagementImpl (implements IRideManagement)**:
+  ```
+  @Autowired RideService rideService
+  // Delegates to RideService
+  // Hides implementation details from controller
+  ```
 
-List<Ride> getUserRides(String riderId)
+- **Update RideController**: Use IRideManagement interface instead of RideService directly
 
-Rider getRider(String riderId)
+### **Mobile App (Screens 4-5)**:
 
-RideManagementImpl (implements IRideManagement):
+- **Screen 4 - Ride History**:
+  - FlatList of all rides
+  - Shows: Date, Driver, Vehicle, Fare, Status
+  - Tap to view details (navigate to screen 3)
+  - Pull to refresh
 
-@Autowired RideService rideService
+- **Screen 5 - Profile**:
+  - Display: Name, Wallet balance
+  - Button: "Add ₹100" → updates wallet via API
+  - Info: Vehicle pricing info (static)
 
-// Delegates to RideService
+- **API Service (`api.js`)**:
+  ```javascript
+  createRide(data)
+  getRide(id)
+  completeRide(id)
+  getRideHistory(riderId)
+  ```
 
-// Hides implementation details from controller
+- **Shared Components**:
+  - VehicleCard
+  - RideCard
+  - StatusBadge
 
-Update RideController: Use IRideManagement interface instead of RideService directly
-Mobile App (Screens 4-5):
-Screen 4 - Ride History:
+### **OOP Focus**:
+- Abstraction: Controller uses interface, not concrete implementation
+- Implementation details hidden
+- Can swap implementations without changing controller
 
-FlatList of all rides
-Shows: Date, Driver, Vehicle, Fare, Status
-Tap to view details (navigate to screen 3)
-Pull to refresh
+---
 
-Screen 5 - Profile:
+## **Daily Plan**
 
-Display: Name, Wallet balance
-Button: "Add ₹100" → updates wallet via API
-Info: Vehicle pricing info (static)
+### **Day 1**
+- **Person 1**: Rider + Ride classes
+- **Person 2**: Driver + Location classes + DataStore
+- **Person 3**: Vehicle hierarchy (abstract + 3 subclasses)
+- **Person 4**: React Native project setup
+- **Person 5**: Help Person 4 with setup
 
-API Service (api.js):
+### **Day 2**
+- **Person 1**: Add validations, test encapsulation
+- **Person 2**: DataSeeder with sample data
+- **Person 3**: PricingStrategy interface + implementations + VehicleFactory
+- **Person 4**: RideService (using Person 3's strategies)
+- **Person 5**: IRideManagement interface
 
-createRide(data)
+### **Day 3**
+- **Person 1 & 2**: Help integrate models with services
+- **Person 3**: Share code with Person 4
+- **Person 4**: RideController + Home screen
+- **Person 5**: RideManagementImpl + Profile screen
 
-getRide(id)
+### **Day 4**
+- **Person 1 & 2**: Bug fixes if needed
+- **Person 3**: Help Person 4 with any issues
+- **Person 4**: Screens 2-3, API integration
+- **Person 5**: History screen, complete api.js
 
-completeRide(id)
+### **Day 5**
+- **Person 4**: Polish screens 1-3, test flows
+- **Person 5**: Polish screens 4-5, full integration
+- **All**: End-to-end testing together (1 hour)
+- **All**: Practice demo presentation (30 min)
 
-getRideHistory(riderId)
+---
 
-Shared Components:
+## **File Structure**
 
-VehicleCard
-RideCard
-StatusBadge
-OOP Focus:
-Abstraction: Controller uses interface, not concrete implementation
-Implementation details hidden
-Can swap implementations without changing controller
-
-
-Daily Plan
-Day 1
-Person 1: Rider + Ride classes
-Person 2: Driver + Location classes + DataStore
-Person 3: Vehicle hierarchy (abstract + 3 subclasses)
-Person 4: React Native project setup
-Person 5: Help Person 4 with setup
-Day 2
-Person 1: Add validations, test encapsulation
-Person 2: DataSeeder with sample data
-Person 3: PricingStrategy interface + implementations + VehicleFactory
-Person 4: RideService (using Person 3's strategies)
-Person 5: IRideManagement interface
-Day 3
-Person 1 & 2: Help integrate models with services
-Person 3: Share code with Person 4
-Person 4: RideController + Home screen
-Person 5: RideManagementImpl + Profile screen
-Day 4
-Person 1 & 2: Bug fixes if needed
-Person 3: Help Person 4 with any issues
-Person 4: Screens 2-3, API integration
-Person 5: History screen, complete api.js
-Day 5
-Person 4: Polish screens 1-3, test flows
-Person 5: Polish screens 4-5, full integration
-All: End-to-end testing together (1 hour)
-All: Practice demo presentation (30 min)
-
-
-File Structure
+```
 ride-share/
-
-├── backend
+├── backend/
 │   └── src/main/java/com/rideshare/
 │       ├── models/
 │       │   ├── Rider.java           (Person 1)
@@ -353,63 +330,70 @@ ride-share/
     ├── services/
     │   └── api.js                   (Person 5)
     └── App.js                       (Person 4)
+```
 
+---
 
-OOP Distribution
-Encapsulation: Person 1 (50%) + Person 2 (50%)
-Person 1: Rider + Ride with private fields & validations
-Person 2: Driver + Location + DataStore with controlled access
-Inheritance: Person 3 (100%)
-Vehicle → Car/Bike/Auto hierarchy
-VehicleFactory
-Polymorphism: Person 3 (50%) + Person 4 (50%)
-Person 3: PricingStrategy interface + implementations
-Person 4: Uses strategies in RideService (demonstrates runtime polymorphism)
-Abstraction: Person 5 (100%)
-IRideManagement interface
-RideManagementImpl hides details from controller
+## **OOP Distribution**
 
+### **Encapsulation**: Person 1 (50%) + Person 2 (50%)
+- Person 1: Rider + Ride with private fields & validations
+- Person 2: Driver + Location + DataStore with controlled access
 
-Demo Script (5 minutes)
-Minute 1 - Person 1:
+### **Inheritance**: Person 3 (100%)
+- Vehicle → Car/Bike/Auto hierarchy
+- VehicleFactory
 
-Show Rider.java with private walletBalance
-Show deductFromWallet() method with validation
-"Encapsulation - data is protected"
+### **Polymorphism**: Person 3 (50%) + Person 4 (50%)
+- Person 3: PricingStrategy interface + implementations
+- Person 4: Uses strategies in RideService (demonstrates runtime polymorphism)
 
-Minute 2 - Person 2:
+### **Abstraction**: Person 5 (100%)
+- IRideManagement interface
+- RideManagementImpl hides details from controller
 
-Show Driver.java with private status
-Show markBusy() and markAvailable() methods
-"Encapsulation - controlled state changes"
+---
 
-Minute 3 - Person 3:
+## **Demo Script (5 minutes)**
 
-Show Vehicle hierarchy: Vehicle → Car/Bike/Auto
-Show PricingStrategy interface with two implementations
-"Inheritance reuses code, Polymorphism changes behavior"
+**Minute 1** - Person 1:
+- Show Rider.java with private walletBalance
+- Show deductFromWallet() method with validation
+- "**Encapsulation** - data is protected"
 
-Minute 4 - Person 4:
+**Minute 2** - Person 2:
+- Show Driver.java with private status
+- Show markBusy() and markAvailable() methods
+- "**Encapsulation** - controlled state changes"
 
-Open Postman, create ride with flat pricing
-Create ride with surge pricing (same distance, different fare)
-Open mobile app, book a ride
-"Polymorphism in action - same method, different results"
+**Minute 3** - Person 3:
+- Show Vehicle hierarchy: Vehicle → Car/Bike/Auto
+- Show PricingStrategy interface with two implementations
+- "**Inheritance** reuses code, **Polymorphism** changes behavior"
 
-Minute 5 - Person 5:
+**Minute 4** - Person 4:
+- Open Postman, create ride with flat pricing
+- Create ride with surge pricing (same distance, different fare)
+- Open mobile app, book a ride
+- "**Polymorphism** in action - same method, different results"
 
-Show IRideManagement interface
-Show RideController using interface (not concrete class)
-Complete ride in mobile app
-Show history screen with past rides
-"Abstraction - controller doesn't know implementation details"
+**Minute 5** - Person 5:
+- Show IRideManagement interface
+- Show RideController using interface (not concrete class)
+- Complete ride in mobile app
+- Show history screen with past rides
+- "**Abstraction** - controller doesn't know implementation details"
 
+---
 
-Work Distribution (Actual Hours)
-Person 1: ~10 hours (2 models + validations) Person 2: ~12 hours (2 models + DataStore + seeding) Person 3: ~15 hours (inheritance + polymorphism) Person 4: ~16 hours (service + API + 3 screens) Person 5: ~12 hours (abstraction + 2 screens + integration)
+## **Work Distribution** (Actual Hours)
 
+**Person 1**: ~10 hours (2 models + validations)
+**Person 2**: ~12 hours (2 models + DataStore + seeding)
+**Person 3**: ~15 hours (inheritance + polymorphism)
+**Person 4**: ~16 hours (service + API + 3 screens)
+**Person 5**: ~12 hours (abstraction + 2 screens + integration)
 
+---
 
-Perfect: 4 OOP concepts split across 5 people, 2 on mobile, no documentation burden! ✅
-
-
+**Perfect: 4 OOP concepts split across 5 people, 2 on mobile, no documentation burden!** ✅

@@ -9,6 +9,9 @@ import com.rideshare.vehicles.Vehicle;
  */
 public class FlatPricing implements PricingStrategy {
     
+    private static final double BASE_FARE = 5.0;
+    private static final double FLAT_DISTANCE_RATE = 2.0;
+    
     /**
      * Calculates fare using flat pricing strategy.
      * Formula: base fare (5) + (distance * 2 * vehicle multiplier)
@@ -26,9 +29,6 @@ public class FlatPricing implements PricingStrategy {
             throw new IllegalArgumentException("Vehicle cannot be null");
         }
         
-        double baseFare = 5.0;
-        double distanceRate = 2.0;
-        
-        return baseFare + (distance * distanceRate * vehicle.getMultiplier());
+        return BASE_FARE + (distance * FLAT_DISTANCE_RATE * vehicle.getMultiplier());
     }
 }

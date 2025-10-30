@@ -9,6 +9,9 @@ import com.rideshare.vehicles.Vehicle;
  */
 public class SurgePricing implements PricingStrategy {
     
+    private static final double BASE_FARE = 5.0;
+    private static final double SURGE_DISTANCE_RATE = 3.0;
+    
     /**
      * Calculates fare using surge pricing strategy.
      * Formula: base fare (5) + (distance * 3 * vehicle multiplier)
@@ -27,9 +30,6 @@ public class SurgePricing implements PricingStrategy {
             throw new IllegalArgumentException("Vehicle cannot be null");
         }
         
-        double baseFare = 5.0; // base fare as per comment above
-        double surgeDistanceRate = 3.0; // Higher rate for surge pricing
-        
-        return baseFare + (distance * surgeDistanceRate * vehicle.getMultiplier());
+        return BASE_FARE + (distance * SURGE_DISTANCE_RATE * vehicle.getMultiplier());
     }
 }

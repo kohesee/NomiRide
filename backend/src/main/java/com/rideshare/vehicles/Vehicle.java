@@ -7,7 +7,6 @@ package com.rideshare.vehicles;
  */
 public abstract class Vehicle {
     protected final String type;
-    protected double baseFareMultiplier;
     /**
      * Constructor for Vehicle
      * @param type The type of vehicle (e.g., "Car", "Bike", "Auto")

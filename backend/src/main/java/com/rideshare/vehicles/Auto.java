@@ -22,7 +22,7 @@ public class Auto extends Vehicle {
      */
     @Override
     public double getMultiplier() {
-        return 0.8;
+        return this.baseFareMultiplier;
     }
 
     /**

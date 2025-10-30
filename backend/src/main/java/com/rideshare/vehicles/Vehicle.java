@@ -6,9 +6,8 @@ package com.rideshare.vehicles;
  * Each concrete vehicle must implement the pricing multiplier and capacity.
  */
 public abstract class Vehicle {
-    protected String type;
+    protected final String type;
     protected double baseFareMultiplier;
-
     /**
      * Constructor for Vehicle
      * @param type The type of vehicle (e.g., "Car", "Bike", "Auto")
@@ -40,10 +39,3 @@ public abstract class Vehicle {
     }
 
     /**
-     * Set the vehicle type
-     * @param type The type of vehicle
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-}

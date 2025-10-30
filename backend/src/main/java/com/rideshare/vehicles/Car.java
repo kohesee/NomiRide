@@ -12,7 +12,6 @@ public class Car extends Vehicle {
      */
     public Car() {
         super("Car");
-        this.baseFareMultiplier = 1.0;
     }
 
     /**

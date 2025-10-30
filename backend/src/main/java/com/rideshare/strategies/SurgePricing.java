@@ -27,7 +27,7 @@ public class SurgePricing implements PricingStrategy {
             throw new IllegalArgumentException("Vehicle cannot be null");
         }
         
-        double baseFare = PricingStrategy.BASE_FARE;
+        double baseFare = 5.0; // base fare as per comment above
         double surgeDistanceRate = 3.0; // Higher rate for surge pricing
         
         return baseFare + (distance * surgeDistanceRate * vehicle.getMultiplier());

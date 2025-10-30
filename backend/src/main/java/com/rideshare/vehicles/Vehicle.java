@@ -36,5 +36,4 @@ public abstract class Vehicle {
     public String getType() {
         return type;
     }
-
-    /**
+    }

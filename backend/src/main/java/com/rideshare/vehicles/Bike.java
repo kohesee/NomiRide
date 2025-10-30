@@ -12,7 +12,6 @@ public class Bike extends Vehicle {
      */
     public Bike() {
         super("Bike");
-        this.baseFareMultiplier = 0.6;
     }
 
     /**
@@ -22,7 +21,7 @@ public class Bike extends Vehicle {
      */
     @Override
     public double getMultiplier() {
-        return this.baseFareMultiplier;
+        return 0.6;
     }
 
     /**

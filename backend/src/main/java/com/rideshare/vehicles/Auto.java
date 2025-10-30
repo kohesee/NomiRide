@@ -12,7 +12,7 @@ public class Auto extends Vehicle {
      */
     public Auto() {
         super("Auto");
-        this.baseFareMultiplier = 0.8;
+        // multiplier is provided by getMultiplier(); do not set a non-existent baseFareMultiplier field here
     }
 
     /**
@@ -22,7 +22,7 @@ public class Auto extends Vehicle {
      */
     @Override
     public double getMultiplier() {
-        return this.baseFareMultiplier;
+        return 0.8;
     }
 
     /**

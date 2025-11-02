@@ -1,3 +1,5 @@
+package com.rideshare.models;
+import com.rideshare.enums.RideStatus;
 import java.time.LocalDateTime;
 
 public class Ride {

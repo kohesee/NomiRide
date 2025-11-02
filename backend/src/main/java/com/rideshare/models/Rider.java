@@ -1,3 +1,5 @@
+package com.rideshare.models;
+
 public class Rider {
     // Private fields (hidden from external access)
     private int id;

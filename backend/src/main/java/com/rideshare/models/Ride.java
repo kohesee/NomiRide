@@ -54,17 +54,22 @@ public class Ride {
     // Getter for timestamp
     public LocalDateTime getTimestamp() { return timestamp; }
 
+    // Mark the ride as in progress (driver has picked up the rider)
+    public void markInProgress() {
+        if (this.status != RideStatus.PENDING) {
+            throw new IllegalStateException("Ride can only be started from PENDING status");
+        }
+        this.status = RideStatus.IN_PROGRESS;
+        this.timestamp = LocalDateTime.now(); // record start time
+    }
+
     // Mark the ride as completed if possible
     public void markCompleted() {
-        if (!canComplete()) {
+        // Allow completion from both PENDING (for quick testing) and IN_PROGRESS
+        if (this.status != RideStatus.PENDING && this.status != RideStatus.IN_PROGRESS) {
             throw new IllegalStateException("Ride cannot be completed from status: " + status);
         }
         this.status = RideStatus.COMPLETED;
         this.timestamp = LocalDateTime.now(); // record completion time
-    }
-
-    // Internal logic: only rides that are IN_PROGRESS can be completed
-    private boolean canComplete() {
-        return (this.status == RideStatus.IN_PROGRESS);
     }
 }

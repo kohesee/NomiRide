@@ -17,7 +17,7 @@ export default function RideCard({ ride, onPress }) {
       </View>
       <Text style={styles.detail}>Driver: {ride.driverId || 'Not assigned'}</Text>
       <Text style={styles.detail}>Distance: {ride.distance} km</Text>
-      <Text style={styles.detail}>Fare: ₹{ride.fare}</Text>
+      <Text style={styles.detail}>Fare: ₹{Number(ride.fare).toFixed(2)}</Text>
       <Text style={styles.timestamp}>{formatDate(ride.timestamp)}</Text>
     </TouchableOpacity>
   );

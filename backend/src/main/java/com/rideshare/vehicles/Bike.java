@@ -21,7 +21,7 @@ public class Bike extends Vehicle {
      */
     @Override
     public double getMultiplier() {
-        return 0.6;
+        return 0.4;
     }
 
     /**

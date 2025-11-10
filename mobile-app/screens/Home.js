@@ -79,6 +79,13 @@ export default function Home({ navigation }) {
         <View style={styles.navButtons}>
           <TouchableOpacity 
             style={styles.navButton} 
+            onPress={() => navigation.navigate('MapScreen')}
+          >
+            <Text style={styles.navButtonText}>🗺️ Map View</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.navButton} 
             onPress={() => navigation.navigate('History')}
           >
             <Text style={styles.navButtonText}>View History</Text>
@@ -207,15 +214,16 @@ const styles = StyleSheet.create({
   navButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10
+    marginTop: 10,
+    flexWrap: 'wrap'
   },
   navButton: {
-    flex: 1,
     backgroundColor: '#673ab7',
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
-    margin: 5
+    margin: 5,
+    minWidth: '30%'
   },
   navButtonText: {
     color: '#fff',

@@ -1,14 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import StatusBadge from '../components/StatusBadge';
+import api from '../services/api';
 
-export default function RideDetails({ route }) {
-  const { ride } = route.params;
+export default function RideDetails({ route, navigation }) {
+  const [ride, setRide] = useState(route.params.ride);
+  const [isCompleting, setIsCompleting] = useState(false);
 
   const formatDate = (timestamp) => {
     if (!timestamp) return 'N/A';
     const date = new Date(timestamp);
     return date.toLocaleString();
+  };
+
+  const completeRide = async () => {
+    setIsCompleting(true);
+    try {
+      const updated = await api.completeRide(ride.id);
+      setRide(updated);
+      Alert.alert('Success', 'Ride completed successfully!');
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message || 'Unknown error';
+      Alert.alert('Failed to Complete Ride', errorMsg);
+    } finally {
+      setIsCompleting(false);
+    }
   };
 
   return (
@@ -39,7 +55,7 @@ export default function RideDetails({ route }) {
 
           <View style={styles.infoRow}>
             <Text style={styles.label}>Fare</Text>
-            <Text style={styles.fareValue}>₹{ride.fare}</Text>
+            <Text style={styles.fareValue}>₹{Number(ride.fare).toFixed(2)}</Text>
           </View>
         </View>
 
@@ -52,6 +68,18 @@ export default function RideDetails({ route }) {
           <Text style={styles.sectionTitle}>Timestamp</Text>
           <Text style={styles.timestampText}>{formatDate(ride.timestamp)}</Text>
         </View>
+
+        {(ride.status === 'PENDING' || ride.status === 'IN_PROGRESS') && (
+          <TouchableOpacity 
+            style={[styles.completeButton, isCompleting && styles.completeButtonDisabled]} 
+            onPress={completeRide}
+            disabled={isCompleting}
+          >
+            <Text style={styles.completeButtonText}>
+              {isCompleting ? 'Completing...' : 'Complete Ride'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -125,5 +153,26 @@ const styles = StyleSheet.create({
   timestampText: {
     fontSize: 16,
     color: '#555'
+  },
+  completeButton: {
+    backgroundColor: '#4caf50',
+    padding: 18,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4
+  },
+  completeButtonDisabled: {
+    backgroundColor: '#9e9e9e',
+    opacity: 0.6
+  },
+  completeButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff'
   }
 });

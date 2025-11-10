@@ -79,8 +79,9 @@ export default function Profile() {
       <View style={styles.infoSection}>
         <Text style={styles.sectionTitle}>Pricing Details</Text>
         <View style={styles.pricingCard}>
-          <Text style={styles.pricingText}>Flat Pricing: ₹5 base + ₹2/km × multiplier</Text>
-          <Text style={styles.pricingText}>Surge Pricing: ₹5 base + ₹3/km × multiplier</Text>
+          <Text style={styles.pricingText}>Flat Pricing: ₹100 base + ₹15/km × vehicle multiplier</Text>
+          <Text style={styles.pricingText}>Surge Pricing: ₹100 base + ₹15/km × 1.5 × vehicle multiplier</Text>
+          <Text style={styles.pricingText}>Pickup Fee: ₹8/km × vehicle multiplier</Text>
         </View>
       </View>
     </ScrollView>

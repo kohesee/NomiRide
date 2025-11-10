@@ -11,8 +11,8 @@ public class SurgePricing implements PricingStrategy {
     
     /**
      * Calculates fare using surge pricing strategy.
-     * Formula: base fare (5) + (distance * 3 * vehicle multiplier)
-     * Higher rate compared to flat pricing due to surge conditions.
+     * Formula: base fare + (distance * surge rate * vehicle multiplier)
+     * Higher rate compared to flat pricing due to peak demand (1.5x multiplier).
      * 
      * @param distance The distance of the ride in kilometers
      * @param vehicle The vehicle being used for the ride
@@ -27,9 +27,10 @@ public class SurgePricing implements PricingStrategy {
             throw new IllegalArgumentException("Vehicle cannot be null");
         }
         
-        double baseFare = 5.0; // base fare as per comment above
-        double surgeDistanceRate = 3.0; // Higher rate for surge pricing
+        double baseFare = 100.0;  // Same base fare
+        double distanceRate = 15.0; // Base rate
+        double surgeMultiplier = 1.5; // 1.5x surge during peak hours
         
-        return baseFare + (distance * surgeDistanceRate * vehicle.getMultiplier());
+        return baseFare + (distance * distanceRate * surgeMultiplier * vehicle.getMultiplier());
     }
 }

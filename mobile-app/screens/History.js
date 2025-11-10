@@ -12,7 +12,7 @@ export default function History({ navigation }) {
 
   const fetchHistory = async () => {
     try {
-      const data = await api.getRideHistory(riderId);
+      const data = await api.getUserRides(riderId);
       setRides(data);
     } catch (error) {
       alert('Failed to fetch history: ' + error.message);

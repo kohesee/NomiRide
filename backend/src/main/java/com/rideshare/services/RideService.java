@@ -56,8 +56,10 @@ public class RideService {
         if (rider != null) {
             boolean ok = rider.deductFromWallet(ride.getFare());
             if (!ok) {
-                // insufficient balance
-                return ride;
+                // insufficient balance - throw exception
+                throw new RuntimeException("Insufficient wallet balance. You have ₹" + 
+                    String.format("%.2f", rider.getWalletBalance()) + 
+                    " but need ₹" + String.format("%.2f", ride.getFare()));
             }
             DataStore.updateRider(rider);
         }

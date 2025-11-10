@@ -26,7 +26,7 @@ public class FlatPricing implements PricingStrategy {
             throw new IllegalArgumentException("Vehicle cannot be null");
         }
         
-        double baseFare = 5.0;
+        double baseFare = 20.0;
         double distanceRate = 2.0;
         
         return baseFare + (distance * distanceRate * vehicle.getMultiplier());

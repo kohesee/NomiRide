@@ -24,7 +24,7 @@ public class RideController {
     private final RideService rideService = new RideService();
 
     public static class CreateRideRequest {
-        public String riderId;
+        public int riderId;
         public double distance;
         public String vehicleType;
         public boolean useSurge;
@@ -39,17 +39,25 @@ public class RideController {
     }
 
     @GetMapping("/rides/{id}")
-    public ResponseEntity<Ride> getRide(@PathVariable String id) {
-        return rideService.getRide(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Ride> getRide(@PathVariable int id) {
+        Ride ride = rideService.getRide(id);
+        if (ride == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ride);
     }
 
     @PatchMapping("/rides/{id}/complete")
-    public ResponseEntity<Ride> completeRide(@PathVariable String id) {
-        return rideService.completeRide(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Ride> completeRide(@PathVariable int id) {
+        Ride ride = rideService.completeRide(id);
+        if (ride == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ride);
     }
 
     @GetMapping("/rides/history/{riderId}")
-    public ResponseEntity<List<Ride>> history(@PathVariable String riderId) {
+    public ResponseEntity<List<Ride>> history(@PathVariable int riderId) {
         return ResponseEntity.ok(rideService.getRideHistory(riderId));
     }
 

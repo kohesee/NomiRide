@@ -10,21 +10,20 @@ import com.rideshare.vehicles.VehicleFactory;
 import com.rideshare.strategies.PricingStrategy;
 import com.rideshare.strategies.FlatPricing;
 import com.rideshare.strategies.SurgePricing;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Random;
-import java.time.LocalDateTime;
 
+@Service
 public class RideService {
 
     private final Random random = new Random();
+    private int rideIdCounter = 1;
 
-    public Ride createRide(String riderId, double distance, VehicleType vehicleType, boolean useSurge) {
+    public Ride createRide(int riderId, double distance, VehicleType vehicleType, boolean useSurge) {
         // find available drivers
-        List<Driver> drivers = DataStore.getDrivers();
-    List<Driver> available = drivers.stream().filter(Driver::isAvailable).collect(Collectors.toList());
+        List<Driver> available = DataStore.getAvailableDrivers();
 
         Driver assigned = null;
         if (!available.isEmpty()) {
@@ -37,61 +36,53 @@ public class RideService {
         PricingStrategy strategy = useSurge ? new SurgePricing() : new FlatPricing();
         double fare = strategy.calculateFare(distance, vehicle);
 
-        Ride ride = new Ride();
-        ride.setId("ride-" + System.currentTimeMillis());
-        ride.setRiderId(riderId);
-        ride.setDriverId(assigned != null ? assigned.getId() : null);
-        ride.setDistance(distance);
+        Ride ride = new Ride(rideIdCounter++, riderId, distance);
+        if (assigned != null) {
+            ride.setDriverId(assigned.getId());
+        }
         ride.setFare(fare);
-        ride.setStatus(com.rideshare.enums.RideStatus.PENDING);
-        ride.setTimestamp(LocalDateTime.now());
 
         DataStore.addRide(ride);
         return ride;
     }
 
-    public Optional<Ride> completeRide(String rideId) {
-        Optional<Ride> maybeRide = DataStore.getRideById(rideId);
-        if (maybeRide.isEmpty()) return maybeRide;
+    public Ride completeRide(int rideId) {
+        Ride ride = DataStore.getRideById(rideId);
+        if (ride == null) {
+            return null;
+        }
 
-        Ride ride = maybeRide.get();
-        if (!ride.canComplete()) return Optional.of(ride);
-
-        Optional<Rider> maybeRider = DataStore.getRiderById(ride.getRiderId());
-        if (maybeRider.isPresent()) {
-            Rider rider = maybeRider.get();
+        Rider rider = DataStore.getRiderById(ride.getRiderId());
+        if (rider != null) {
             boolean ok = rider.deductFromWallet(ride.getFare());
             if (!ok) {
                 // insufficient balance
-                return Optional.of(ride);
+                return ride;
             }
             DataStore.updateRider(rider);
         }
 
         // mark driver available
-        if (ride.getDriverId() != null) {
-            Optional<Driver> maybeDriver = DataStore.getDriverById(ride.getDriverId());
-            if (maybeDriver.isPresent()) {
-                Driver d = maybeDriver.get();
-                d.markAvailable();
-                DataStore.updateDriver(d);
-            }
+        Driver driver = DataStore.getDriverById(ride.getDriverId());
+        if (driver != null) {
+            driver.markAvailable();
+            DataStore.updateDriver(driver);
         }
 
         ride.markCompleted();
         DataStore.updateRide(ride);
-        return Optional.of(ride);
+        return ride;
     }
 
-    public List<Ride> getRideHistory(String riderId) {
-    return DataStore.getRides().stream().filter(r -> r.getRiderId() != null && r.getRiderId().equals(riderId)).collect(Collectors.toList());
+    public List<Ride> getRideHistory(int riderId) {
+        return DataStore.getRidesByRiderId(riderId);
     }
 
-    public Optional<Ride> getRide(String rideId) {
+    public Ride getRide(int rideId) {
         return DataStore.getRideById(rideId);
     }
 
     public List<Driver> getAvailableDrivers() {
-    return DataStore.getDrivers().stream().filter(Driver::isAvailable).collect(Collectors.toList());
+        return DataStore.getAvailableDrivers();
     }
 }

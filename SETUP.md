@@ -8,7 +8,7 @@
 - npm
 - Expo CLI (`npm install -g expo-cli`)
 
-## Backend Setup (Spring Boot)
+## Backend Setup in Spring Boot
 
 1. Navigate to the backend directory:
 ```bash
@@ -17,12 +17,12 @@ cd backend
 
 2. Build the project:
 ```bash
-mvn clean install
+.\mvnw.cmd clean install
 ```
 
 3. Run the Spring Boot application:
 ```bash
-mvn spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
 
 The backend server will start on `http://localhost:8080`
@@ -37,7 +37,7 @@ The backend server will start on `http://localhost:8080`
 - `GET /api/riders/{riderId}` - Get rider information
 - `PATCH /api/riders/{riderId}/wallet` - Add money to wallet
 
-## Mobile App Setup (React Native with Expo)
+## Mobile App Setup in React Native with Expo
 
 1. Navigate to the mobile app directory:
 ```bash
@@ -68,7 +68,7 @@ const API_BASE = 'http://10.0.2.2:8080/api';
 
 - For Android Emulator: Use `http://10.0.2.2:8080/api`
 - For iOS Simulator: Use `http://localhost:8080/api`
-- For Physical Device: Use your computer's IP address (e.g., `http://192.168.1.100:8080/api`)
+- For Physical Device: Use your computer's IP address (`http://192.168.1.100:8080/api`)
 
 To find your IP address:
 - Windows: `ipconfig` (look for IPv4 Address)
@@ -79,7 +79,7 @@ To find your IP address:
 1. **Start Backend** (Terminal 1):
 ```bash
 cd backend
-mvn spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
 
 2. **Start Mobile App** (Terminal 2):
@@ -93,80 +93,21 @@ npm start
 - Press `i` for iOS (Mac only)
 - Scan QR code with Expo Go app on physical device
 
-## Testing the Application
-
-### Initial Data
-The application seeds the following data on startup:
-- 5 Drivers (IDs: 1-5)
-- 3 Riders (IDs: 1-3, with ₹500 initial balance each)
-
 ### Test Flow
-1. Open the Home screen
-2. Enter distance (e.g., 10 km)
-3. Select vehicle type (Car/Bike/Auto)
+1. Login with any credentials
+2. Select pickup location (e.g., Pune Station)
+3. Select dropoff location (e.g., Hinjewadi IT Park)
 4. Toggle surge pricing if needed
-5. Click "Calculate Fare" to see estimate
-6. Click "Book Ride" to create a ride
-7. On Booking Confirmation, click "Complete Ride"
-8. View ride details
-9. Navigate to "View History" to see all past rides
-10. Navigate to "My Profile" to view wallet balance and add money
+5. Click "Find Rides" to see available drivers
+6. Select a vehicle from the bottom sheet
+7. Click "Confirm Vehicle" to book
+8. Click "Complete Ride" on confirmation screen
+9. View completed ride details
+10. Open menu (☰) → "My Trips" for ride history
+11. Open menu (☰) → "Profile" for wallet management
 
 ### Default Rider
 The app uses Rider ID: 1 by default for all operations.
-
-## Project Structure
-
-### Backend (Person 5 Implementation)
-- `services/IRideManagement.java` - Abstraction interface for ride management
-- `services/RideManagementImpl.java` - Implementation hiding details from controller
-- `controllers/RideController.java` - Updated to use interface instead of concrete service
-
-### Mobile App (Person 5 Implementation)
-- `screens/History.js` - Ride history screen with pull-to-refresh
-- `screens/Profile.js` - Profile screen with wallet management
-- `components/RideCard.js` - Reusable ride card component
-- `components/StatusBadge.js` - Status badge component
-- `components/VehicleCard.js` - Vehicle information card
-- `services/api.js` - API service with all endpoints
-- `App.js` - Updated navigation with all 5 screens
-
-## OOP Concepts Demonstrated
-
-### Person 5: Abstraction
-- **IRideManagement Interface**: Defines contract for ride management operations
-- **RideManagementImpl**: Hides implementation details from RideController
-- **Controller uses interface**: RideController depends on interface, not concrete implementation
-- **Benefits**: Can swap implementations without changing controller code
-
-## Troubleshooting
-
-### Backend Issues
-- **Port 8080 already in use**: Stop other processes using port 8080 or change the port in `application.properties`
-- **Maven build fails**: Run `mvn clean install` to rebuild
-
-### Mobile App Issues
-- **Cannot connect to backend**: Check API_BASE URL in `services/api.js`
-- **Expo errors**: Clear cache with `expo start -c`
-- **Dependencies issues**: Delete `node_modules` and run `npm install` again
-
-## Demo Checklist
-
-### Backend (Person 5)
-1. Show IRideManagement interface
-2. Show RideManagementImpl hiding service details
-3. Show RideController using interface (not concrete class)
-4. Explain how implementation can be swapped without affecting controller
-
-### Mobile App (Person 5)
-1. Navigate to History screen and show ride list
-2. Pull to refresh to update data
-3. Tap on a ride to view details
-4. Navigate to Profile screen
-5. Show wallet balance
-6. Click "Add ₹100" button
-7. Verify balance updated
-8. Show vehicle pricing information
 
 ## Technologies Used
 

@@ -16,10 +16,8 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedData() {
-        // Seed 3 Riders
         seedRiders();
         
-        // Seed 8 Drivers
         seedDrivers();
         
         System.out.println("✓ Data seeding completed!");

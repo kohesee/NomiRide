@@ -22,7 +22,6 @@ public class RideService {
     private int rideIdCounter = 1;
 
     public Ride createRide(int riderId, double distance, VehicleType vehicleType, boolean useSurge) {
-        // find available drivers
         List<Driver> available = DataStore.getAvailableDrivers();
 
         Driver assigned = null;
@@ -56,7 +55,6 @@ public class RideService {
         if (rider != null) {
             boolean ok = rider.deductFromWallet(ride.getFare());
             if (!ok) {
-                // insufficient balance - throw exception
                 throw new RuntimeException("Insufficient wallet balance. You have ₹" + 
                     String.format("%.2f", rider.getWalletBalance()) + 
                     " but need ₹" + String.format("%.2f", ride.getFare()));
@@ -64,7 +62,6 @@ public class RideService {
             DataStore.updateRider(rider);
         }
 
-        // mark driver available
         Driver driver = DataStore.getDriverById(ride.getDriverId());
         if (driver != null) {
             driver.markAvailable();

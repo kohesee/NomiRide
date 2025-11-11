@@ -38,7 +38,7 @@ public class RideController {
         public double distance;
         public String vehicleType;
         public boolean useSurge;
-        public Double fare;  // Optional: if provided, use this fare instead of calculating
+        public Double fare;
         public CreateRideRequest() {}
     }
 
@@ -47,7 +47,6 @@ public class RideController {
         VehicleType vt = VehicleType.valueOf(req.vehicleType.toUpperCase());
         Ride ride = rideManagement.requestRide(req.riderId, req.distance, vt, req.useSurge);
         
-        // If fare is provided (from frontend), override the calculated fare
         if (req.fare != null && req.fare > 0) {
             ride.setFare(req.fare);
         }
@@ -95,7 +94,6 @@ public class RideController {
         Location toLocation = new Location(toLat, toLon, "Dropoff");
         double tripDistance = fromLocation.distanceTo(toLocation);
         
-        // Select pricing strategy based on surge parameter
         com.rideshare.strategies.PricingStrategy pricingStrategy = useSurge 
             ? new com.rideshare.strategies.SurgePricing() 
             : new com.rideshare.strategies.FlatPricing();
@@ -109,10 +107,8 @@ public class RideController {
             VehicleType vType = VehicleType.valueOf(driver.getVehicleType().toUpperCase());
             com.rideshare.vehicles.Vehicle vehicle = com.rideshare.vehicles.VehicleFactory.createVehicle(vType);
             
-            // Calculate trip fare using pricing strategy
             double tripCost = pricingStrategy.calculateFare(tripDistance, vehicle);
             
-            // Add pickup cost (₹8 per km)
             double pickupFeePerKm = 8.0;
             double pickupCost = distanceToPickup * pickupFeePerKm * vehicle.getMultiplier();
             

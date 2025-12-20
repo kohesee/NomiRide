@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "NomiRide",
+    "slug": "nomiride",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.nomiride.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDjNp2z6p6qX8j3f9K8h5L7m9N1o3P5r7"
+        }
+      }
+    }
+  }
+}

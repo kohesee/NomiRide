@@ -3,14 +3,12 @@ package com.rideshare.models;
 import com.rideshare.enums.DriverStatus;
 
 public class Driver {
-    // Private fields (hidden from external access)
     private int id;
     private String name;
     private String vehicleType;
     private DriverStatus status;
     private Location location;
 
-    // Constructor
     public Driver(int id, String name, String vehicleType, DriverStatus status, Location location) {
         this.id = id;
         this.name = name;
@@ -19,7 +17,6 @@ public class Driver {
         this.location = location;
     }
 
-    // Getter and setter for id
     public int getId() {
         return id;
     }
@@ -28,7 +25,6 @@ public class Driver {
         this.id = id;
     }
 
-    // Getter and setter for name
     public String getName() {
         return name;
     }
@@ -40,7 +36,6 @@ public class Driver {
         this.name = name;
     }
 
-    // Getter and setter for vehicleType
     public String getVehicleType() {
         return vehicleType;
     }
@@ -52,7 +47,6 @@ public class Driver {
         this.vehicleType = vehicleType;
     }
 
-    // Getter and setter for status
     public DriverStatus getStatus() {
         return status;
     }
@@ -64,7 +58,6 @@ public class Driver {
         this.status = status;
     }
 
-    // Getter and setter for location
     public Location getLocation() {
         return location;
     }
@@ -73,17 +66,14 @@ public class Driver {
         this.location = location;
     }
 
-    // Mark driver as busy (controlled state change)
     public void markBusy() {
         this.status = DriverStatus.BUSY;
     }
 
-    // Mark driver as available (controlled state change)
     public void markAvailable() {
         this.status = DriverStatus.AVAILABLE;
     }
 
-    // Check if driver is available
     public boolean isAvailable() {
         return this.status == DriverStatus.AVAILABLE;
     }
